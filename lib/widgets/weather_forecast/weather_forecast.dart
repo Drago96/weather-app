@@ -66,15 +66,12 @@ class WeatherForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GradientContainer(
-      child: ListView(
-        children: <Widget>[
-          _buildLocationAndUpdatedAtRow(context),
-          _buildCurrentWeatherRow(context),
-          _buildWeatherDetailsRow(context),
-        ],
-      ),
-      color: Colors.lightBlue,
+    return ListView(
+      children: <Widget>[
+        _buildLocationAndUpdatedAtRow(context),
+        _buildCurrentWeatherRow(context),
+        _buildWeatherDetailsRow(context),
+      ],
     );
   }
 }

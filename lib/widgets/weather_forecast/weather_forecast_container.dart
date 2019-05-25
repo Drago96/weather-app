@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
-import 'package:location/location.dart';
 
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_event.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_state.dart';
-import 'package:weather_app/services/weather_api.dart';
+import 'package:weather_app/widgets/ui/gradient_container.dart';
+import 'package:weather_app/widgets/ui/scrollable_container.dart';
 import 'package:weather_app/widgets/weather_forecast/weather_forecast.dart';
 
 class WeatherForecastContainer extends StatefulWidget {
@@ -28,20 +28,17 @@ class WeatherForecastContainer extends StatefulWidget {
 }
 
 class _WeatherForecastContainerState extends State<WeatherForecastContainer> {
-  WeatherForecastBloc _weatherForecastBloc;
-  Completer<void> _refreshCompleter;
+  final _weatherForecastBloc = WeatherForecastBloc();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+  Completer<void> _refreshCompleter = Completer();
 
   @override
   void initState() {
     super.initState();
 
-    _refreshCompleter = Completer<void>();
-    _weatherForecastBloc = WeatherForecastBloc(
-      weatherApi: WeatherApi(httpClient: http.Client()),
-      location: Location(),
-    );
-
-    _weatherForecastBloc.dispatch(widget.fetchWeatherForecastEvent);
+    SchedulerBinding.instance
+        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
 
   @override
@@ -50,44 +47,52 @@ class _WeatherForecastContainerState extends State<WeatherForecastContainer> {
       bloc: _weatherForecastBloc,
       child: BlocListener(
         bloc: _weatherForecastBloc,
-        listener: (_, WeatherForecastState state) {
+        listener: (BuildContext context, WeatherForecastState state) {
           if (state is WeatherForecastLoaded || state is WeatherForecastError) {
             _refreshCompleter?.complete();
 
             _refreshCompleter = Completer();
           }
+
+          if (state is WeatherForecastError) {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+              ),
+            );
+          }
         },
         child: BlocBuilder(
             bloc: _weatherForecastBloc,
             builder: (_, WeatherForecastState state) {
-              if (state is WeatherForecastLoading) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (state is WeatherForecastLoaded) {
-                return RefreshIndicator(
-                  onRefresh: () {
-                    _weatherForecastBloc
-                        .dispatch(widget.fetchWeatherForecastEvent);
+              return RefreshIndicator(
+                key: _refreshIndicatorKey,
+                onRefresh: () {
+                  _weatherForecastBloc
+                      .dispatch(widget.fetchWeatherForecastEvent);
 
-                    return _refreshCompleter?.future;
-                  },
-                  child: WeatherForecast(
-                    weatherForecast: state.weatherForecast,
-                    isCurrentLocation: widget.isCurrentLocation,
-                  ),
-                );
-              }
-              if (state is WeatherForecastError) {
-                return Center(
-                  child: Text(
-                    state.error,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                );
-              }
-
-              return Container();
+                  return _refreshCompleter?.future;
+                },
+                child: GradientContainer(
+                  child: state.weatherForecast == null
+                      ? ScrollableContainer(
+                          child: Center(
+                            child: Text(
+                              "Swipe to fetch weather.",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                              ),
+                            ),
+                          ),
+                        )
+                      : WeatherForecast(
+                          weatherForecast: state.weatherForecast,
+                          isCurrentLocation: widget.isCurrentLocation,
+                        ),
+                  color: Colors.lightBlue,
+                ),
+              );
             }),
       ),
     );

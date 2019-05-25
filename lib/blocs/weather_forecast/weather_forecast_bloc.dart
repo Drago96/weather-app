@@ -1,20 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
-import 'package:weather_app/models/weather_forecast.dart';
 import 'package:weather_app/services/weather_api.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_event.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_state.dart';
 
 class WeatherForecastBloc
     extends Bloc<WeatherForecastEvent, WeatherForecastState> {
-  final WeatherApi weatherApi;
-  final Location location;
-
-  WeatherForecastBloc({@required this.weatherApi, @required this.location})
-      : assert(weatherApi != null, location != null);
+  final WeatherApi weatherApi = WeatherApi();
+  final Location location = Location();
 
   @override
   WeatherForecastState get initialState => WeatherForecastEmpty();
@@ -32,11 +27,17 @@ class WeatherForecastBloc
   Stream<WeatherForecastState> _fetchWeatherForecast(
     WeatherForecastEvent event,
   ) async* {
-    yield WeatherForecastLoading();
+    yield WeatherForecastLoading(currentState.weatherForecast);
 
     try {
       if (event is FetchWeatherForecastForCurrentLocation) {
-        final weatherForecast = await _fetchWeatherForecastForCurrentLocation();
+        final currentLocation = await location.getLocation();
+
+        final weatherForecast =
+            await weatherApi.getWeatherForecastByLocationCoordinates(
+          currentLocation.latitude,
+          currentLocation.longitude,
+        );
 
         yield WeatherForecastLoaded(weatherForecast: weatherForecast);
       }
@@ -47,27 +48,29 @@ class WeatherForecastBloc
 
         yield WeatherForecastLoaded(weatherForecast: weatherForecast);
       }
+    } on PlatformException catch (error) {
+      yield _platformExceptionError(error);
     } catch (error) {
-      yield WeatherForecastError(error: error.toString());
+      yield _genericWeatherForecastError();
     }
   }
 
-  Future<WeatherForecast> _fetchWeatherForecastForCurrentLocation() async {
-    try {
-      final currentLocation = await location.getLocation();
-
-      return weatherApi.getWeatherForecastByLocationCoordinates(
-        currentLocation.latitude,
-        currentLocation.longitude,
+  WeatherForecastError _platformExceptionError(PlatformException error) {
+    if (error.code == 'PERMISSION_DENIED') {
+      return _weatherForecastError(
+        "Please allow the application to access device's current location.",
       );
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        throw Exception(
-          "Please allow the application to access device's current location.",
-        );
-      }
-
-      throw e;
+    } else {
+      return _genericWeatherForecastError();
     }
   }
+
+  WeatherForecastError _genericWeatherForecastError() =>
+      _weatherForecastError("Something went wrong. Please try again later.");
+
+  WeatherForecastError _weatherForecastError(String error) =>
+      WeatherForecastError(
+        error: error,
+        weatherForecast: currentState.weatherForecast,
+      );
 }

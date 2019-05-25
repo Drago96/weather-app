@@ -1,16 +1,13 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 import 'package:weather_app/models/weather_forecast.dart';
 
 class WeatherApi {
   static const baseUrl = 'http://metaweather.com';
 
-  final http.Client httpClient;
-
-  WeatherApi({@required this.httpClient}) : assert(httpClient != null);
+  final http.Client httpClient = http.Client();
 
   Future<WeatherForecast> getWeatherForecastByLocationCoordinates(
       double latitude, double longitude) async {
@@ -33,7 +30,7 @@ class WeatherApi {
         await this.httpClient.get(weatherForecastUrl);
 
     if (weatherForecastResponse.statusCode != 200) {
-      throw Exception('error getting weather for location');
+      throw Exception('Error getting weather for location');
     }
 
     final weatherForecastJson = jsonDecode(weatherForecastResponse.body);
@@ -55,7 +52,7 @@ class WeatherApi {
     final locationResponse = await this.httpClient.get(locationUrl);
 
     if (locationResponse.statusCode != 200) {
-      throw Exception('error getting locationId for location');
+      throw Exception('Error getting locationId for location');
     }
 
     final locationJson = jsonDecode(locationResponse.body) as List;
