@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Location extends StatelessWidget {
+class Condition extends StatelessWidget {
+  final String condition;
+
+  Condition({@required this.condition}) : assert(condition != null);
+
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Plovdiv',
+      condition,
       style: TextStyle(
         fontSize: 30,
         color: Colors.white,

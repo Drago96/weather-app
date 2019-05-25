@@ -31,11 +31,8 @@ class WeatherForecast extends Equatable {
 
   Map<String, dynamic> toJson() => _$WeatherForecastToJson(this);
 
-  Weather get currentWeather {
-    return consolidatedWeather.first;
-  }
+  Weather get currentWeather => consolidatedWeather.first;
 
-  static DateTime _updatedAtFromJson(DateTime updatedAtJsonValue) {
-    return updatedAtJsonValue ?? DateTime.now();
-  }
+  static DateTime _updatedAtFromJson(DateTime updatedAtJsonValue) =>
+      updatedAtJsonValue ?? DateTime.now();
 }

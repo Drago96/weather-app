@@ -1,26 +1,26 @@
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:weather_app/models/weather.dart';
+import 'package:weather_app/models/weather_forecast.dart';
 
-abstract class WeatherState extends Equatable {
-  WeatherState([List props = const []]) : super(props);
+abstract class WeatherForecastState extends Equatable {
+  WeatherForecastState([List props = const []]) : super(props);
 }
 
-class WeatherEmpty extends WeatherState {}
+class WeatherForecastEmpty extends WeatherForecastState {}
 
-class WeatherLoading extends WeatherState {}
+class WeatherForecastLoading extends WeatherForecastState {}
 
-class WeatherLoaded extends WeatherState {
-  final Weather weather;
+class WeatherForecastLoaded extends WeatherForecastState {
+  final WeatherForecast weatherForecast;
 
-  WeatherLoaded({@required this.weather})
-      : assert(weather != null),
-        super([weather]);
+  WeatherForecastLoaded({@required this.weatherForecast})
+      : assert(weatherForecast != null),
+        super([weatherForecast]);
 }
 
-class WeatherError extends WeatherState {
+class WeatherForecastError extends WeatherForecastState {
   final String error;
 
-  WeatherError({this.error}) : super([error]);
+  WeatherForecastError({this.error}) : super([error]);
 }

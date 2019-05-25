@@ -29,6 +29,7 @@ dependencies:
   equatable: ^0.2.5
   json_annotation: ^2.4.0
   location: ^2.3.5
+  intl: ^0.15.8
 
 dev_dependencies:
   flutter_test:

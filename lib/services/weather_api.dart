@@ -5,12 +5,12 @@ import 'package:meta/meta.dart';
 
 import 'package:weather_app/models/weather_forecast.dart';
 
-class WeatherApiClient {
+class WeatherApi {
   static const baseUrl = 'http://metaweather.com';
 
   final http.Client httpClient;
 
-  WeatherApiClient({@required this.httpClient}) : assert(httpClient != null);
+  WeatherApi({@required this.httpClient}) : assert(httpClient != null);
 
   Future<WeatherForecast> getWeatherForecastByLocationCoordinates(
       double latitude, double longitude) async {
@@ -19,15 +19,18 @@ class WeatherApiClient {
     return _getWeatherForecastByLocationId(locationId);
   }
 
-  Future<WeatherForecast> getWeatherForecastByLocationName(String location) async {
+  Future<WeatherForecast> getWeatherForecastByLocationName(
+      String location) async {
     final locationId = await _getLocationIdByName(location);
 
     return _getWeatherForecastByLocationId(locationId);
   }
 
-  Future<WeatherForecast> _getWeatherForecastByLocationId(int locationId) async {
+  Future<WeatherForecast> _getWeatherForecastByLocationId(
+      int locationId) async {
     final weatherForecastUrl = '$baseUrl/api/location/$locationId';
-    final weatherForecastResponse = await this.httpClient.get(weatherForecastUrl);
+    final weatherForecastResponse =
+        await this.httpClient.get(weatherForecastUrl);
 
     if (weatherForecastResponse.statusCode != 200) {
       throw Exception('error getting weather for location');
