@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:weather_app/screens/locations.dart';
 import 'package:weather_app/screens/search.dart';
-import 'package:weather_app/screens/weather.dart';
+import 'package:weather_app/screens/weather_forecast.dart';
 
 void main() => runApp(App());
 
@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => Weather(),
+        '/': (context) => WeatherForecast(),
         '/locations': (context) => Locations(),
         '/search': (context) => Search(),
       },
