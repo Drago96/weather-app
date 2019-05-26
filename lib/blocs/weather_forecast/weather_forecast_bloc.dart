@@ -22,6 +22,10 @@ class WeatherForecastBloc
         event is FetchWeatherForecastByLocationName) {
       yield* _fetchWeatherForecast(event);
     }
+
+    if (event is SetWeatherForecast) {
+      yield WeatherForecastLoaded(weatherForecast: event.weatherForecast);
+    }
   }
 
   Stream<WeatherForecastState> _fetchWeatherForecast(

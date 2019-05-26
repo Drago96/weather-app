@@ -39,6 +39,7 @@ class WeatherForecast extends StatelessWidget {
         ConditionIcon(
           condition: weatherForecast.currentWeather.condition,
         ),
+        SizedBox(width: 10),
         CurrentTemperature(
           currentTemperature: weatherForecast.currentWeather.currentTemperature,
         ),
