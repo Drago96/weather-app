@@ -11,7 +11,7 @@ WeatherForecast _$WeatherForecastFromJson(Map<String, dynamic> json) {
       locationName: json['title'] as String,
       locationId: json['woeid'] as int,
       updatedAt:
-          WeatherForecast._updatedAtFromJson(json['updated_at'] as DateTime),
+          WeatherForecast._updatedAtFromJson(json['updated_at'] as String),
       consolidatedWeather: (json['consolidated_weather'] as List)
           ?.map((e) =>
               e == null ? null : Weather.fromJson(e as Map<String, dynamic>))

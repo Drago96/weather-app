@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'weather.g.dart';
@@ -31,7 +32,7 @@ class Weather extends Equatable {
   @JsonKey(name: 'max_temp')
   final double maxTemperature;
 
-  @JsonKey(name: 'applicable_date')
+  @JsonKey(name: 'applicable_date', toJson: _applicableDateToJson)
   final DateTime date;
 
   Weather({
@@ -105,5 +106,11 @@ class Weather extends Equatable {
       default:
         return "Unknown";
     }
+  }
+
+  static String _applicableDateToJson(DateTime applicableDate) {
+    final formatter = new DateFormat('yyyy-MM-dd');
+
+    return formatter.format(applicableDate);
   }
 }

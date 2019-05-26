@@ -22,5 +22,5 @@ Map<String, dynamic> _$WeatherToJson(Weather instance) => <String, dynamic>{
       'the_temp': instance.currentTemperature,
       'min_temp': instance.minTemperature,
       'max_temp': instance.maxTemperature,
-      'applicable_date': instance.date?.toIso8601String()
+      'applicable_date': Weather._applicableDateToJson(instance.date)
     };

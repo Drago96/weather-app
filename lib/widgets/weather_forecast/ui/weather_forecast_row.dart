@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class WeatherRow extends StatelessWidget {
+class WeatherForecastRow extends StatelessWidget {
   final List<Widget> children;
 
-  const WeatherRow({@required this.children}) : assert(children != null);
+  const WeatherForecastRow({@required this.children})
+      : assert(children != null);
 
   @override
   Widget build(BuildContext context) {

@@ -16,7 +16,15 @@ class FetchWeatherForecastByLocationName extends WeatherForecastEvent {
         super([locationName]);
 }
 
-class FetchWeatherForecastForCurrentLocation extends WeatherForecastEvent {}
+class FetchWeatherForecastByLocationCoordiantes extends WeatherForecastEvent {
+  final double latitude;
+  final double longitude;
+
+  FetchWeatherForecastByLocationCoordiantes(
+      {@required this.latitude, @required this.longitude})
+      : assert(latitude != null, longitude != null),
+        super([latitude, longitude]);
+}
 
 class SetWeatherForecast extends WeatherForecastEvent {
   final WeatherForecast weatherForecast;
@@ -24,4 +32,10 @@ class SetWeatherForecast extends WeatherForecastEvent {
   SetWeatherForecast({@required this.weatherForecast})
       : assert(weatherForecast != null),
         super([weatherForecast]);
+}
+
+class SetWeatherForecastError extends WeatherForecastEvent {
+  final String error;
+
+  SetWeatherForecastError({this.error}) : super([error]);
 }

@@ -4,14 +4,14 @@ class Location extends StatelessWidget {
   final String location;
   final bool isCurrentLocation;
 
-  Location({@required this.location, this.isCurrentLocation})
+  Location({@required this.location, this.isCurrentLocation = false})
       : assert(location != null);
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> locationRowContent = [];
 
-    if (isCurrentLocation != null && isCurrentLocation) {
+    if (isCurrentLocation) {
       locationRowContent.addAll([
         Icon(
           Icons.location_on,

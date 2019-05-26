@@ -1,7 +1,6 @@
-import 'package:flutter/services.dart';
-import 'package:location/location.dart';
 import 'package:bloc/bloc.dart';
 
+import 'package:weather_app/models/weather_forecast.dart';
 import 'package:weather_app/services/weather_api.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_event.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_state.dart';
@@ -9,7 +8,6 @@ import 'package:weather_app/blocs/weather_forecast/weather_forecast_state.dart';
 class WeatherForecastBloc
     extends Bloc<WeatherForecastEvent, WeatherForecastState> {
   final WeatherApi weatherApi = WeatherApi();
-  final Location location = Location();
 
   @override
   WeatherForecastState get initialState => WeatherForecastEmpty();
@@ -18,13 +16,17 @@ class WeatherForecastBloc
   Stream<WeatherForecastState> mapEventToState(
     WeatherForecastEvent event,
   ) async* {
-    if (event is FetchWeatherForecastForCurrentLocation ||
+    if (event is FetchWeatherForecastByLocationCoordiantes ||
         event is FetchWeatherForecastByLocationName) {
       yield* _fetchWeatherForecast(event);
     }
 
     if (event is SetWeatherForecast) {
       yield WeatherForecastLoaded(weatherForecast: event.weatherForecast);
+    }
+
+    if (event is SetWeatherForecastError) {
+      yield _weatherForecastError(event.error);
     }
   }
 
@@ -34,43 +36,28 @@ class WeatherForecastBloc
     yield WeatherForecastLoading(currentState.weatherForecast);
 
     try {
-      if (event is FetchWeatherForecastForCurrentLocation) {
-        final currentLocation = await location.getLocation();
+      WeatherForecast weatherForecast;
 
-        final weatherForecast =
+      if (event is FetchWeatherForecastByLocationCoordiantes) {
+        weatherForecast =
             await weatherApi.getWeatherForecastByLocationCoordinates(
-          currentLocation.latitude,
-          currentLocation.longitude,
+          event.latitude,
+          event.longitude,
         );
-
-        yield WeatherForecastLoaded(weatherForecast: weatherForecast);
       }
 
       if (event is FetchWeatherForecastByLocationName) {
-        final weatherForecast = await weatherApi
+        weatherForecast = await weatherApi
             .getWeatherForecastByLocationName(event.locationName);
-
-        yield WeatherForecastLoaded(weatherForecast: weatherForecast);
       }
-    } on PlatformException catch (error) {
-      yield _platformExceptionError(error);
+
+      yield WeatherForecastLoaded(weatherForecast: weatherForecast);
     } catch (error) {
-      yield _genericWeatherForecastError();
-    }
-  }
-
-  WeatherForecastError _platformExceptionError(PlatformException error) {
-    if (error.code == 'PERMISSION_DENIED') {
-      return _weatherForecastError(
-        "Please allow the application to access device's current location.",
+      yield _weatherForecastError(
+        "Something went wrong. Please try again later.",
       );
-    } else {
-      return _genericWeatherForecastError();
     }
   }
-
-  WeatherForecastError _genericWeatherForecastError() =>
-      _weatherForecastError("Something went wrong. Please try again later.");
 
   WeatherForecastError _weatherForecastError(String error) =>
       WeatherForecastError(

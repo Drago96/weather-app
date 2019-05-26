@@ -33,6 +33,8 @@ class WeatherForecast extends Equatable {
 
   Weather get currentWeather => consolidatedWeather.first;
 
-  static DateTime _updatedAtFromJson(DateTime updatedAtJsonValue) =>
-      updatedAtJsonValue ?? DateTime.now();
+  static DateTime _updatedAtFromJson(String updatedAtJsonValue) =>
+      updatedAtJsonValue != null
+          ? DateTime.parse(updatedAtJsonValue)
+          : DateTime.now();
 }
