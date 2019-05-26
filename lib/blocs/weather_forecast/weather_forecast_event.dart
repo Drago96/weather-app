@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:weather_app/models/weather_forecast.dart';
 
+@immutable
 abstract class WeatherForecastEvent extends Equatable {
   WeatherForecastEvent([List props = const []]) : super(props);
 }
