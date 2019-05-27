@@ -16,12 +16,12 @@ class CachedWeatherForecast extends StatefulWidget {
   final bool isCurrentLocation;
   final FetchWeatherForecastCallback fetchWeatherForecast;
 
-  CachedWeatherForecast(
-      {Key key,
-      @required this.weatherForecastKey,
-      this.isCurrentLocation,
-      this.fetchWeatherForecast})
-      : assert(weatherForecastKey != null),
+  CachedWeatherForecast({
+    Key key,
+    @required this.weatherForecastKey,
+    @required this.fetchWeatherForecast,
+    this.isCurrentLocation,
+  })  : assert(weatherForecastKey != null, fetchWeatherForecast != null),
         super(key: key);
 
   @override
