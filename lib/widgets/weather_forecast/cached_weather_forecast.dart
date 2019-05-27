@@ -12,9 +12,9 @@ import 'package:weather_app/types/typedef.dart';
 
 class CachedWeatherForecast extends StatefulWidget {
   final String weatherForecastKey;
+  final FetchWeatherForecastCallback fetchWeatherForecast;
 
   final bool isCurrentLocation;
-  final FetchWeatherForecastCallback fetchWeatherForecast;
 
   CachedWeatherForecast({
     Key key,

@@ -11,6 +11,7 @@ import 'package:weather_app/widgets/weather_forecast/ui/weather_forecast_row.dar
 
 class WeatherForecast extends StatelessWidget {
   final Models.WeatherForecast weatherForecast;
+
   final bool isCurrentLocation;
 
   WeatherForecast({@required this.weatherForecast, this.isCurrentLocation})

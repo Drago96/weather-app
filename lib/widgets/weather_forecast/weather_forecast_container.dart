@@ -15,8 +15,8 @@ import 'package:weather_app/types/typedef.dart';
 
 class WeatherForecastContainer extends StatefulWidget {
   final FetchWeatherForecastCallback fetchWeatherForecast;
-  final Models.WeatherForecast initialWeatherForecast;
 
+  final Models.WeatherForecast initialWeatherForecast;
   final bool isCurrentLocation;
 
   WeatherForecastContainer({
