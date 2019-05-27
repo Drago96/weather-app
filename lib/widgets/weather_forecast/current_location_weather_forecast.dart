@@ -30,12 +30,6 @@ class CurrentLocationWeatherForecast extends StatelessWidget {
                 "Please allow the application to access device's current location.",
           ),
         );
-      } else {
-        weatherForecastBloc.dispatch(
-          SetWeatherForecastError(
-            error: "There was an error while accessing device's current location.",
-          ),
-        );
       }
     }
   }
