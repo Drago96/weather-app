@@ -40,7 +40,7 @@ class _WeatherForecastContainerState extends State<WeatherForecastContainer>
 
   @override
   void afterFirstLayout(BuildContext context) {
-    if (widget.initialWeatherForecast != null) {
+    if (_shouldShowInitialWeatherForecast()) {
       final weatherForecastBloc = WeatherForecastBlocProvider.of(context);
 
       weatherForecastBloc.dispatch(
@@ -50,6 +50,13 @@ class _WeatherForecastContainerState extends State<WeatherForecastContainer>
       _weatherForecastRefreshIndicatorKey.currentState.show();
     }
   }
+
+  bool _shouldShowInitialWeatherForecast() =>
+      widget.initialWeatherForecast != null &&
+      DateTime.now()
+              .difference(widget.initialWeatherForecast.updatedAt)
+              .inMinutes <
+          10;
 
   @override
   Widget build(BuildContext context) {
@@ -85,15 +92,17 @@ class _WeatherForecastContainerState extends State<WeatherForecastContainer>
               child: GradientContainer(
                 child: state.weatherForecast == null
                     ? ScrollableContainer(
-                        child: Center(
-                          child: Text(
-                            "Swipe to fetch weather.",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
+                        child: state is WeatherForecastEmpty
+                            ? null
+                            : Center(
+                                child: Text(
+                                  "Swipe to fetch weather.",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
                       )
                     : WeatherForecast(
                         weatherForecast: state.weatherForecast,
