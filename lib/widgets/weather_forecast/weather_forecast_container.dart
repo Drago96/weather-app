@@ -34,6 +34,8 @@ class WeatherForecastContainer extends StatefulWidget {
 
 class _WeatherForecastContainerState extends State<WeatherForecastContainer>
     with AfterLayoutMixin<WeatherForecastContainer> {
+  static const INITIAL_WEATHER_FORECAST_REFRESH_PERIOD = 10 * 60;
+
   Completer<void> _weatherForecastRefreshCompleter = Completer();
   final GlobalKey<RefreshIndicatorState> _weatherForecastRefreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
@@ -55,8 +57,8 @@ class _WeatherForecastContainerState extends State<WeatherForecastContainer>
       widget.initialWeatherForecast != null &&
       DateTime.now()
               .difference(widget.initialWeatherForecast.updatedAt)
-              .inMinutes <
-          10;
+              .inSeconds <
+          INITIAL_WEATHER_FORECAST_REFRESH_PERIOD;
 
   @override
   Widget build(BuildContext context) {
