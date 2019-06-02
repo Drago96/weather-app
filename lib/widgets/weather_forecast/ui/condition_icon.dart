@@ -3,8 +3,12 @@ import 'package:weather_app/models/weather.dart';
 
 class ConditionIcon extends StatelessWidget {
   final WeatherCondition condition;
+  final double scale;
 
-  ConditionIcon({@required this.condition}) : assert(condition != null);
+  ConditionIcon({
+    @required this.condition,
+    this.scale = 1,
+  }) : assert(condition != null);
 
   String _getConditionImageUrl() {
     switch (condition) {
@@ -31,6 +35,9 @@ class ConditionIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(_getConditionImageUrl());
+    return Image.asset(
+      _getConditionImageUrl(),
+      scale: scale,
+    );
   }
 }

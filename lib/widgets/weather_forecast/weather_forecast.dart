@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:weather_app/models/weather_forecast.dart' as Models;
+import 'package:weather_app/widgets/weather_forecast/daily_weather_forecast.dart';
 import 'package:weather_app/widgets/weather_forecast/ui/condition.dart';
 import 'package:weather_app/widgets/weather_forecast/ui/condition_icon.dart';
 import 'package:weather_app/widgets/weather_forecast/ui/current_temperature.dart';
@@ -65,6 +67,22 @@ class WeatherForecast extends StatelessWidget {
     );
   }
 
+  Widget _buildDailyForecastRow(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 50.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(35.0),
+        child: Container(
+          color: Colors.lightBlueAccent,
+          height: 200.0,
+          child: DailyWeatherForecast(
+            consolidatedWeather: weatherForecast.consolidatedWeather,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -72,6 +90,7 @@ class WeatherForecast extends StatelessWidget {
         _buildLocationAndUpdatedAtRow(context),
         _buildCurrentWeatherRow(context),
         _buildWeatherDetailsRow(context),
+        _buildDailyForecastRow(context),
       ],
     );
   }
