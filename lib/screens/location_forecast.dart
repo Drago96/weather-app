@@ -24,11 +24,11 @@ class LocationForecast extends StatefulWidget {
 }
 
 class _LocationForecastState extends State<LocationForecast> {
-  final weatherForecastBloc = WeatherForecastBloc();
+  final _weatherForecastBloc = WeatherForecastBloc();
 
   FetchWeatherForecastCallback _fetchWeatherForecastByLocationId(locationId) {
     return (BuildContext context) {
-      weatherForecastBloc.dispatch(FetchWeatherForecastByLocationId(
+      _weatherForecastBloc.dispatch(FetchWeatherForecastByLocationId(
         locationId: locationId,
       ));
     };
@@ -44,7 +44,7 @@ class _LocationForecastState extends State<LocationForecast> {
         title: Text(args.location.name),
       ),
       body: BlocProvider(
-        bloc: weatherForecastBloc,
+        bloc: _weatherForecastBloc,
         child: WeatherForecastContainer(
           fetchWeatherForecast:
               _fetchWeatherForecastByLocationId(args.location.id),
@@ -55,7 +55,7 @@ class _LocationForecastState extends State<LocationForecast> {
 
   @override
   void dispose() {
-    weatherForecastBloc.dispose();
+    _weatherForecastBloc.dispose();
 
     super.dispose();
   }

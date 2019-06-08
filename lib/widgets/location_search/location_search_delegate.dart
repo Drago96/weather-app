@@ -90,7 +90,7 @@ class LocationSearchDelegate extends SearchDelegate {
         }
 
         if (state.locations.isEmpty) {
-          return _centeredMessage(context, "No locations found.");
+          return _centeredMessage(context, "No locations match your search.");
         }
 
         return _locationsList(context, state);

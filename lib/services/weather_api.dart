@@ -17,13 +17,6 @@ class WeatherApi {
     return getWeatherForecastByLocationId(locationId);
   }
 
-  Future<WeatherForecast> getWeatherForecastByLocationName(
-      String location) async {
-    final locationId = await _getLocationIdByName(location);
-
-    return getWeatherForecastByLocationId(locationId);
-  }
-
   Future<WeatherForecast> getWeatherForecastByLocationId(int locationId) async {
     final weatherForecastUrl = '$baseUrl/api/location/$locationId';
     final weatherForecastResponse =

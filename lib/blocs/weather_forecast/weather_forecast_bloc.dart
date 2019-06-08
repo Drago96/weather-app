@@ -43,11 +43,6 @@ class WeatherForecastBloc
         );
       }
 
-      if (event is FetchWeatherForecastByLocationName) {
-        weatherForecast = await weatherApi
-            .getWeatherForecastByLocationName(event.locationName);
-      }
-
       if (event is FetchWeatherForecastByLocationId) {
         weatherForecast =
             await weatherApi.getWeatherForecastByLocationId(event.locationId);

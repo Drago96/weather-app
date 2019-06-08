@@ -20,7 +20,7 @@ class _CurrentLocationWeatherForecastState
   static const CURRENT_LOCATION_WEATHER_FORECAST_KEY =
       "CURRENT_LOCATION_WEATHER_FORECAST_KEY";
 
-  final weatherForecastBloc = WeatherForecastBloc();
+  final _weatherForecastBloc = WeatherForecastBloc();
 
   void _fetchWeatherForecastForCurrentLocation(BuildContext context) async {
     try {
@@ -28,13 +28,13 @@ class _CurrentLocationWeatherForecastState
 
       final currentLocation = await location.getLocation();
 
-      weatherForecastBloc.dispatch(FetchWeatherForecastByLocationCoordiantes(
+      _weatherForecastBloc.dispatch(FetchWeatherForecastByLocationCoordiantes(
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
       ));
     } on PlatformException catch (error) {
       if (error.code == 'PERMISSION_DENIED') {
-        weatherForecastBloc.dispatch(
+        _weatherForecastBloc.dispatch(
           SetWeatherForecastError(
             error:
                 "Please allow the application to access device's current location.",
@@ -47,7 +47,7 @@ class _CurrentLocationWeatherForecastState
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      bloc: weatherForecastBloc,
+      bloc: _weatherForecastBloc,
       child: CachedWeatherForecast(
         weatherForecastKey: CURRENT_LOCATION_WEATHER_FORECAST_KEY,
         fetchWeatherForecast: _fetchWeatherForecastForCurrentLocation,
@@ -58,7 +58,7 @@ class _CurrentLocationWeatherForecastState
 
   @override
   void dispose() {
-    weatherForecastBloc.dispose();
+    _weatherForecastBloc.dispose();
 
     super.dispose();
   }

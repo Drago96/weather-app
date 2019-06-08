@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:weather_app/screens/location_forecast.dart';
-import 'package:weather_app/screens/weather_forecast.dart';
+import 'package:weather_app/screens/current_location_forecast.dart';
+import 'package:weather_app/screens/locations_map.dart';
 
 void main() => runApp(App());
 
@@ -22,10 +23,12 @@ class App extends StatelessWidget {
         ),
         hintColor: Colors.white,
       ),
-      initialRoute: WeatherForecast.routeName,
+      initialRoute: CurrentLocationForecast.routeName,
       routes: {
-        WeatherForecast.routeName: (context) => WeatherForecast(),
+        CurrentLocationForecast.routeName: (context) =>
+            CurrentLocationForecast(),
         LocationForecast.routeName: (context) => LocationForecast(),
+        LocationsMap.routeName: (context) => LocationsMap(),
       },
     );
   }

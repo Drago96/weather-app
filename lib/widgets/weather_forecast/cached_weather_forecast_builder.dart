@@ -36,8 +36,8 @@ class CachedWeatherForecastState {
 
 class _CachedWeatherForecastBuilderState
     extends State<CachedWeatherForecastBuilder> {
-  WeatherForecast cachedWeatherForecast;
-  bool cachedWeatherForecastLoaded = false;
+  WeatherForecast _cachedWeatherForecast;
+  bool _cachedWeatherForecastLoaded = false;
 
   @override
   void initState() {
@@ -57,14 +57,14 @@ class _CachedWeatherForecastBuilderState
 
       if (existingWeatherForecast != null) {
         setState(() {
-          cachedWeatherForecast = WeatherForecast.fromJson(
+          _cachedWeatherForecast = WeatherForecast.fromJson(
             json.decode(existingWeatherForecast),
           );
         });
       }
     } finally {
       setState(() {
-        cachedWeatherForecastLoaded = true;
+        _cachedWeatherForecastLoaded = true;
       });
     }
   }
@@ -90,8 +90,8 @@ class _CachedWeatherForecastBuilderState
       child: widget.builder(
           context,
           CachedWeatherForecastState(
-            cachedWeatherForecast: cachedWeatherForecast,
-            cachedWeatherForecastLoaded: cachedWeatherForecastLoaded,
+            cachedWeatherForecast: _cachedWeatherForecast,
+            cachedWeatherForecastLoaded: _cachedWeatherForecastLoaded,
           )),
     );
   }

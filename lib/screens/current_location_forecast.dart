@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:weather_app/models/location.dart';
 import 'package:weather_app/screens/location_forecast.dart';
+import 'package:weather_app/screens/locations_map.dart';
 import 'package:weather_app/widgets/location_search/location_search_delegate.dart';
 import 'package:weather_app/widgets/weather_forecast/current_location_weather_forecast.dart';
 
-class WeatherForecast extends StatelessWidget {
+class CurrentLocationForecast extends StatelessWidget {
   static const routeName = '/';
 
   Widget _buildAppBar(BuildContext context) {
@@ -13,9 +14,9 @@ class WeatherForecast extends StatelessWidget {
       title: Text('Weather'),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.location_city),
+          icon: Icon(Icons.map),
           onPressed: () {
-            Navigator.pushNamed(context, '/locations');
+            Navigator.pushNamed(context, LocationsMap.routeName);
           },
         ),
         IconButton(

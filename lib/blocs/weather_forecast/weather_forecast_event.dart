@@ -12,14 +12,6 @@ abstract class FetchWeatherForecastEvent extends WeatherForecastEvent {
   FetchWeatherForecastEvent([List props = const []]) : super(props);
 }
 
-class FetchWeatherForecastByLocationName extends FetchWeatherForecastEvent {
-  final String locationName;
-
-  FetchWeatherForecastByLocationName({@required this.locationName})
-      : assert(locationName != null),
-        super([locationName]);
-}
-
 class FetchWeatherForecastByLocationCoordiantes
     extends FetchWeatherForecastEvent {
   final double latitude;
