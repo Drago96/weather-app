@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:after_layout/after_layout.dart';
 
-import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc_provider.dart';
+import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_event.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_state.dart';
 import 'package:weather_app/models/weather_forecast.dart' as Models;
@@ -43,7 +43,7 @@ class _WeatherForecastContainerState extends State<WeatherForecastContainer>
   @override
   void afterFirstLayout(BuildContext context) {
     if (_shouldShowInitialWeatherForecast()) {
-      final weatherForecastBloc = WeatherForecastBlocProvider.of(context);
+      final weatherForecastBloc = BlocProvider.of<WeatherForecastBloc>(context);
 
       weatherForecastBloc.dispatch(
         SetWeatherForecast(weatherForecast: widget.initialWeatherForecast),
@@ -60,9 +60,31 @@ class _WeatherForecastContainerState extends State<WeatherForecastContainer>
               .inSeconds <
           INITIAL_WEATHER_FORECAST_REFRESH_PERIOD;
 
+  Widget _weatherForecast(BuildContext context, WeatherForecastState state) {
+    if (state.weatherForecast == null) {
+      return ScrollableContainer(
+        child: state is WeatherForecastError
+            ? Center(
+                child: Text(
+                  "Swipe to fetch weather.",
+                  style: TextStyle(
+                    fontSize: 25,
+                  ),
+                ),
+              )
+            : null,
+      );
+    }
+
+    return WeatherForecast(
+      weatherForecast: state.weatherForecast,
+      isCurrentLocation: widget.isCurrentLocation,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final weatherForecastBloc = WeatherForecastBlocProvider.of(context);
+    final weatherForecastBloc = BlocProvider.of<WeatherForecastBloc>(context);
 
     return BlocListener(
       bloc: weatherForecastBloc,
@@ -92,24 +114,7 @@ class _WeatherForecastContainerState extends State<WeatherForecastContainer>
                 return _weatherForecastRefreshCompleter?.future;
               },
               child: GradientContainer(
-                child: state.weatherForecast == null
-                    ? ScrollableContainer(
-                        child: state is WeatherForecastEmpty
-                            ? null
-                            : Center(
-                                child: Text(
-                                  "Swipe to fetch weather.",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                  ),
-                                ),
-                              ),
-                      )
-                    : WeatherForecast(
-                        weatherForecast: state.weatherForecast,
-                        isCurrentLocation: widget.isCurrentLocation,
-                      ),
+                child: _weatherForecast(context, state),
                 color: Colors.lightBlue,
               ),
             );

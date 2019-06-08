@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc_provider.dart';
+import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc.dart';
 
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_state.dart';
 import 'package:weather_app/models/weather_forecast.dart';
@@ -81,7 +81,7 @@ class _CachedWeatherForecastBuilderState
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      bloc: WeatherForecastBlocProvider.of(context),
+      bloc: BlocProvider.of<WeatherForecastBloc>(context),
       listener: (_, WeatherForecastState state) {
         if (state is WeatherForecastLoaded) {
           _onWeatherForecastLoaded(state.weatherForecast);

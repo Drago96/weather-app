@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:weather_app/models/weather_forecast.dart';
+import 'package:weather_app/models/location.dart';
 
 class WeatherApi {
   static const baseUrl = 'http://metaweather.com';
@@ -13,18 +14,17 @@ class WeatherApi {
       double latitude, double longitude) async {
     final locationId = await _getLocationIdByCoordinates(latitude, longitude);
 
-    return _getWeatherForecastByLocationId(locationId);
+    return getWeatherForecastByLocationId(locationId);
   }
 
   Future<WeatherForecast> getWeatherForecastByLocationName(
       String location) async {
     final locationId = await _getLocationIdByName(location);
 
-    return _getWeatherForecastByLocationId(locationId);
+    return getWeatherForecastByLocationId(locationId);
   }
 
-  Future<WeatherForecast> _getWeatherForecastByLocationId(
-      int locationId) async {
+  Future<WeatherForecast> getWeatherForecastByLocationId(int locationId) async {
     final weatherForecastUrl = '$baseUrl/api/location/$locationId';
     final weatherForecastResponse =
         await this.httpClient.get(weatherForecastUrl);
@@ -36,6 +36,24 @@ class WeatherApi {
     final weatherForecastJson = jsonDecode(weatherForecastResponse.body);
 
     return WeatherForecast.fromJson(weatherForecastJson);
+  }
+
+  Future<List<Location>> getLocationsBySearchTerm(String searchTerm) async {
+    final searchUrl = '$baseUrl/api/location/search/?query=$searchTerm';
+    final locationsResponse = await this.httpClient.get(searchUrl);
+
+    if (locationsResponse.statusCode != 200) {
+      throw Exception('Error searching for locations');
+    }
+
+    final locationsJson = jsonDecode(locationsResponse.body) as List;
+    final locations = locationsJson
+        .map(
+          (dynamic locationJson) => Location.fromJson(locationJson),
+        )
+        .toList();
+
+    return locations;
   }
 
   Future<int> _getLocationIdByCoordinates(

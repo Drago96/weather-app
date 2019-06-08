@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'package:weather_app/models/location.dart';
+import 'package:weather_app/screens/location_forecast.dart';
+import 'package:weather_app/widgets/location_search/location_search_delegate.dart';
 import 'package:weather_app/widgets/weather_forecast/current_location_weather_forecast.dart';
 
 class WeatherForecast extends StatelessWidget {
+  static const routeName = '/';
+
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
       title: Text('Weather'),
@@ -15,8 +20,21 @@ class WeatherForecast extends StatelessWidget {
         ),
         IconButton(
           icon: Icon(Icons.search),
-          onPressed: () {
-            Navigator.pushNamed(context, '/search');
+          onPressed: () async {
+            final location = await showSearch(
+              context: context,
+              delegate: LocationSearchDelegate(),
+            ) as Location;
+
+            if (location != null) {
+              Navigator.pushNamed(
+                context,
+                LocationForecast.routeName,
+                arguments: LocationForecastArguments(
+                  location: location,
+                ),
+              );
+            }
           },
         )
       ],

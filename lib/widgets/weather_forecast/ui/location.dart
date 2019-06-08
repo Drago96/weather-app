@@ -4,8 +4,9 @@ class Location extends StatelessWidget {
   final String location;
   final bool isCurrentLocation;
 
-  Location({@required this.location, this.isCurrentLocation = false})
-      : assert(location != null);
+  Location({@required this.location, bool isCurrentLocation})
+      : assert(location != null),
+        this.isCurrentLocation = isCurrentLocation ?? false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,6 @@ class Location extends StatelessWidget {
         location,
         style: TextStyle(
           fontSize: 30,
-          color: Colors.white,
         ),
       ),
     );

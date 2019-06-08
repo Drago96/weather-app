@@ -18,7 +18,6 @@ class MinMaxTemperature extends StatelessWidget {
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: FontWeight.w300,
-        color: Colors.white,
       ),
     );
   }

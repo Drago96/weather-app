@@ -11,7 +11,6 @@ class Condition extends StatelessWidget {
       condition,
       style: TextStyle(
         fontSize: 30,
-        color: Colors.white,
       ),
     );
   }

@@ -12,7 +12,6 @@ class CurrentTemperature extends StatelessWidget {
       "${currentTemperature.round()}°",
       style: TextStyle(
         fontSize: 50,
-        color: Colors.white,
       ),
     );
   }

@@ -12,7 +12,6 @@ class Date extends StatelessWidget {
       DateFormat.MMMd().format(date),
       style: TextStyle(
         fontSize: 20,
-        color: Colors.white,
       ),
     );
   }

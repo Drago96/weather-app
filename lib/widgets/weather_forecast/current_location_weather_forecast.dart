@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location/location.dart';
 
-import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc_provider.dart';
+import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_event.dart';
 import 'package:weather_app/widgets/weather_forecast/cached_weather_forecast.dart';
 
-class CurrentLocationWeatherForecast extends StatelessWidget {
+class CurrentLocationWeatherForecast extends StatefulWidget {
+  CurrentLocationWeatherForecast({Key key}) : super(key: key);
+
+  @override
+  State<CurrentLocationWeatherForecast> createState() =>
+      _CurrentLocationWeatherForecastState();
+}
+
+class _CurrentLocationWeatherForecastState
+    extends State<CurrentLocationWeatherForecast> {
   static const CURRENT_LOCATION_WEATHER_FORECAST_KEY =
       "CURRENT_LOCATION_WEATHER_FORECAST_KEY";
 
-  void _fetchWeatherForecastForCurrentLocation(BuildContext context) async {
-    final weatherForecastBloc = WeatherForecastBlocProvider.of(context);
+  final weatherForecastBloc = WeatherForecastBloc();
 
+  void _fetchWeatherForecastForCurrentLocation(BuildContext context) async {
     try {
       Location location = Location();
 
@@ -36,12 +46,20 @@ class CurrentLocationWeatherForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WeatherForecastBlocProvider(
+    return BlocProvider(
+      bloc: weatherForecastBloc,
       child: CachedWeatherForecast(
         weatherForecastKey: CURRENT_LOCATION_WEATHER_FORECAST_KEY,
         fetchWeatherForecast: _fetchWeatherForecastForCurrentLocation,
         isCurrentLocation: true,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    weatherForecastBloc.dispose();
+
+    super.dispose();
   }
 }

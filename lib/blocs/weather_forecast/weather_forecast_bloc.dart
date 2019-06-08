@@ -16,8 +16,7 @@ class WeatherForecastBloc
   Stream<WeatherForecastState> mapEventToState(
     WeatherForecastEvent event,
   ) async* {
-    if (event is FetchWeatherForecastByLocationCoordiantes ||
-        event is FetchWeatherForecastByLocationName) {
+    if (event is FetchWeatherForecastEvent) {
       yield* _fetchWeatherForecast(event);
     }
 
@@ -33,8 +32,6 @@ class WeatherForecastBloc
   Stream<WeatherForecastState> _fetchWeatherForecast(
     WeatherForecastEvent event,
   ) async* {
-    yield WeatherForecastLoading(currentState.weatherForecast);
-
     try {
       WeatherForecast weatherForecast;
 
@@ -49,6 +46,11 @@ class WeatherForecastBloc
       if (event is FetchWeatherForecastByLocationName) {
         weatherForecast = await weatherApi
             .getWeatherForecastByLocationName(event.locationName);
+      }
+
+      if (event is FetchWeatherForecastByLocationId) {
+        weatherForecast =
+            await weatherApi.getWeatherForecastByLocationId(event.locationId);
       }
 
       yield WeatherForecastLoaded(weatherForecast: weatherForecast);

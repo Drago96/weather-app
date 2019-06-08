@@ -8,7 +8,11 @@ abstract class WeatherForecastEvent extends Equatable {
   WeatherForecastEvent([List props = const []]) : super(props);
 }
 
-class FetchWeatherForecastByLocationName extends WeatherForecastEvent {
+abstract class FetchWeatherForecastEvent extends WeatherForecastEvent {
+  FetchWeatherForecastEvent([List props = const []]) : super(props);
+}
+
+class FetchWeatherForecastByLocationName extends FetchWeatherForecastEvent {
   final String locationName;
 
   FetchWeatherForecastByLocationName({@required this.locationName})
@@ -16,7 +20,8 @@ class FetchWeatherForecastByLocationName extends WeatherForecastEvent {
         super([locationName]);
 }
 
-class FetchWeatherForecastByLocationCoordiantes extends WeatherForecastEvent {
+class FetchWeatherForecastByLocationCoordiantes
+    extends FetchWeatherForecastEvent {
   final double latitude;
   final double longitude;
 
@@ -24,6 +29,14 @@ class FetchWeatherForecastByLocationCoordiantes extends WeatherForecastEvent {
       {@required this.latitude, @required this.longitude})
       : assert(latitude != null, longitude != null),
         super([latitude, longitude]);
+}
+
+class FetchWeatherForecastByLocationId extends FetchWeatherForecastEvent {
+  final int locationId;
+
+  FetchWeatherForecastByLocationId({@required this.locationId})
+      : assert(locationId != null),
+        super([locationId]);
 }
 
 class SetWeatherForecast extends WeatherForecastEvent {
