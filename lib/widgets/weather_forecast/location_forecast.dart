@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc.dart';
@@ -7,17 +7,12 @@ import 'package:weather_app/types/typedef.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_event.dart';
 import 'package:weather_app/widgets/weather_forecast/weather_forecast_container.dart';
 
-class LocationForecastArguments {
+class LocationForecast extends StatefulWidget {
   final Location location;
 
-  LocationForecastArguments({@required this.location})
-      : assert(location != null);
-}
-
-class LocationForecast extends StatefulWidget {
-  static const routeName = '/location_forecast';
-
-  LocationForecast({Key key}) : super(key: key);
+  LocationForecast({Key key, @required this.location})
+      : assert(location != null),
+        super(key: key);
 
   @override
   State<LocationForecast> createState() => _LocationForecastState();
@@ -29,26 +24,18 @@ class _LocationForecastState extends State<LocationForecast> {
   FetchWeatherForecastCallback _fetchWeatherForecastByLocationId(locationId) {
     return (BuildContext context) {
       _weatherForecastBloc.dispatch(FetchWeatherForecastByLocationId(
-        locationId: locationId,
+        locationId: widget.location.id,
       ));
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    final LocationForecastArguments args =
-        ModalRoute.of(context).settings.arguments;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(args.location.name),
-      ),
-      body: BlocProvider(
-        bloc: _weatherForecastBloc,
-        child: WeatherForecastContainer(
-          fetchWeatherForecast:
-              _fetchWeatherForecastByLocationId(args.location.id),
-        ),
+    return BlocProvider(
+      bloc: _weatherForecastBloc,
+      child: WeatherForecastContainer(
+        fetchWeatherForecast:
+            _fetchWeatherForecastByLocationId(widget.location.id),
       ),
     );
   }

@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/blocs/location_search/location_search_bloc.dart';
 import 'package:weather_app/blocs/location_search/location_search_event.dart';
 import 'package:weather_app/blocs/location_search/location_search_state.dart';
+import 'package:weather_app/models/location.dart';
 
-class LocationSearchDelegate extends SearchDelegate {
+class LocationSearchDelegate extends SearchDelegate<Location> {
   final locationSearchBloc = LocationSearchBloc();
 
   @override

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'package:weather_app/widgets/weather_forecast/cached_weather_forecast_builder.dart';
+import 'package:weather_app/widgets/weather_forecast/cached_forecast_builder.dart';
 import 'package:weather_app/widgets/weather_forecast/weather_forecast_container.dart';
 import 'package:weather_app/types/typedef.dart';
 
-class CachedWeatherForecast extends StatelessWidget {
+class CachedForecast extends StatelessWidget {
   final String weatherForecastKey;
   final FetchWeatherForecastCallback fetchWeatherForecast;
 
   final bool isCurrentLocation;
 
-  CachedWeatherForecast({
+  CachedForecast({
     Key key,
     @required this.weatherForecastKey,
     @required this.fetchWeatherForecast,
@@ -20,9 +20,9 @@ class CachedWeatherForecast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedWeatherForecastBuilder(
+    return CachedForecastBuilder(
       weatherForecastKey: weatherForecastKey,
-      builder: (_, CachedWeatherForecastState state) {
+      builder: (_, CachedForecastState state) {
         if (!state.cachedWeatherForecastLoaded) {
           return Container();
         }
@@ -36,4 +36,3 @@ class CachedWeatherForecast extends StatelessWidget {
     );
   }
 }
-

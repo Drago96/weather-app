@@ -5,10 +5,10 @@ import 'package:weather_app/widgets/weather_forecast/ui/condition_icon.dart';
 import 'package:weather_app/widgets/weather_forecast/ui/min_max_temperature.dart';
 import 'package:weather_app/widgets/weather_forecast/ui/date.dart';
 
-class DailyWeatherForecast extends StatelessWidget {
+class DailyForecast extends StatelessWidget {
   final List<Weather> consolidatedWeather;
 
-  DailyWeatherForecast({@required this.consolidatedWeather})
+  DailyForecast({@required this.consolidatedWeather})
       : assert(consolidatedWeather != null);
 
   @override

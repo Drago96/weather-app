@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:weather_app/widgets/locations_map/location_marker_card.dart';
 
 class LocationsMap extends StatefulWidget {
-  static const routeName = '/locations_map';
-
   LocationsMap({Key key}) : super(key: key);
 
   @override
@@ -17,7 +14,7 @@ class _LocationsMapState extends State<LocationsMap> {
   static const MIN_MAX_ZOOM_PREFERENCE = MinMaxZoomPreference(3, 1000);
   static const SELECTED_LOCATION_ID = "SELECTED_LOCATION_ID";
 
-  final Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _controller;
   Set<Marker> _locationMarkers = Set<Marker>();
 
   LatLng get _selectedLocation {
@@ -29,7 +26,7 @@ class _LocationsMapState extends State<LocationsMap> {
   }
 
   void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
+    _controller = controller;
   }
 
   void _clearMarker() {
@@ -48,27 +45,48 @@ class _LocationsMapState extends State<LocationsMap> {
           onTap: _clearMarker,
         ),
       );
+
+      _moveToMarkedLocation();
     });
+  }
+
+  void _moveToMarkedLocation() {
+    _controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: _selectedLocation),
+      ),
+    );
+  }
+
+  void _popRouteWithCoordinates(BuildContext context) {
+    Navigator.pop(context, _selectedLocation);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Locations'),
-      ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: INITIAL_CAMERA_POSITION,
-          zoom: 3,
+    return Stack(
+      children: <Widget>[
+        GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: INITIAL_CAMERA_POSITION,
+            zoom: 3,
+          ),
+          minMaxZoomPreference: MIN_MAX_ZOOM_PREFERENCE,
+          myLocationEnabled: true,
+          rotateGesturesEnabled: false,
+          markers: _locationMarkers,
+          onTap: _setLocationMarker,
         ),
-        minMaxZoomPreference: MIN_MAX_ZOOM_PREFERENCE,
-        myLocationEnabled: true,
-        rotateGesturesEnabled: false,
-        markers: _locationMarkers,
-        onTap: _setLocationMarker,
-      ),
+        _selectedLocation == null
+            ? Container()
+            : LocationMarkerCard(
+                location: _selectedLocation,
+                onClearMarkerClicked: _clearMarker,
+                onGoToMarkerClicked: _moveToMarkedLocation,
+                onViewForecastClicked: _popRouteWithCoordinates,
+              )
+      ],
     );
   }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:weather_app/models/location.dart';
-import 'package:weather_app/screens/location_forecast.dart';
-import 'package:weather_app/screens/locations_map.dart';
+import 'package:weather_app/screens/geographic_forecast_screen.dart';
+import 'package:weather_app/screens/location_forecast_screen.dart';
+import 'package:weather_app/screens/locations_map_screen.dart';
 import 'package:weather_app/widgets/location_search/location_search_delegate.dart';
-import 'package:weather_app/widgets/weather_forecast/current_location_weather_forecast.dart';
+import 'package:weather_app/widgets/weather_forecast/current_location_forecast.dart';
 
-class CurrentLocationForecast extends StatelessWidget {
+class CurrentLocationForecastScreen extends StatelessWidget {
   static const routeName = '/';
 
   Widget _buildAppBar(BuildContext context) {
@@ -15,8 +17,21 @@ class CurrentLocationForecast extends StatelessWidget {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.map),
-          onPressed: () {
-            Navigator.pushNamed(context, LocationsMap.routeName);
+          onPressed: () async {
+            final coordinates = await Navigator.pushNamed(
+              context,
+              LocationsMapScreen.routeName,
+            ) as LatLng;
+
+            if (coordinates != null) {
+              Navigator.pushNamed(
+                context,
+                GeographicForecastScreen.routeName,
+                arguments: GeographicForecastArguments(
+                  coordinates: coordinates,
+                ),
+              );
+            }
           },
         ),
         IconButton(
@@ -25,12 +40,12 @@ class CurrentLocationForecast extends StatelessWidget {
             final location = await showSearch(
               context: context,
               delegate: LocationSearchDelegate(),
-            ) as Location;
+            );
 
             if (location != null) {
               Navigator.pushNamed(
                 context,
-                LocationForecast.routeName,
+                LocationForecastScreen.routeName,
                 arguments: LocationForecastArguments(
                   location: location,
                 ),
@@ -49,7 +64,7 @@ class CurrentLocationForecast extends StatelessWidget {
       body: Center(
         child: PageView(
           children: <Widget>[
-            CurrentLocationWeatherForecast(),
+            CurrentLocationForecast(),
           ],
         ),
       ),

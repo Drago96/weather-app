@@ -5,18 +5,17 @@ import 'package:location/location.dart';
 
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_bloc.dart';
 import 'package:weather_app/blocs/weather_forecast/weather_forecast_event.dart';
-import 'package:weather_app/widgets/weather_forecast/cached_weather_forecast.dart';
+import 'package:weather_app/widgets/weather_forecast/cached_forecast.dart';
 
-class CurrentLocationWeatherForecast extends StatefulWidget {
-  CurrentLocationWeatherForecast({Key key}) : super(key: key);
+class CurrentLocationForecast extends StatefulWidget {
+  CurrentLocationForecast({Key key}) : super(key: key);
 
   @override
-  State<CurrentLocationWeatherForecast> createState() =>
-      _CurrentLocationWeatherForecastState();
+  State<CurrentLocationForecast> createState() =>
+      _CurrentLocationForecastState();
 }
 
-class _CurrentLocationWeatherForecastState
-    extends State<CurrentLocationWeatherForecast> {
+class _CurrentLocationForecastState extends State<CurrentLocationForecast> {
   static const CURRENT_LOCATION_WEATHER_FORECAST_KEY =
       "CURRENT_LOCATION_WEATHER_FORECAST_KEY";
 
@@ -48,7 +47,7 @@ class _CurrentLocationWeatherForecastState
   Widget build(BuildContext context) {
     return BlocProvider(
       bloc: _weatherForecastBloc,
-      child: CachedWeatherForecast(
+      child: CachedForecast(
         weatherForecastKey: CURRENT_LOCATION_WEATHER_FORECAST_KEY,
         fetchWeatherForecast: _fetchWeatherForecastForCurrentLocation,
         isCurrentLocation: true,

@@ -9,11 +9,11 @@ import 'package:weather_app/blocs/weather_forecast/weather_forecast_state.dart';
 import 'package:weather_app/models/weather_forecast.dart';
 import 'package:weather_app/types/typedef.dart';
 
-class CachedWeatherForecastBuilder extends StatefulWidget {
+class CachedForecastBuilder extends StatefulWidget {
   final String weatherForecastKey;
-  final BuilderCallback<CachedWeatherForecastState> builder;
+  final BuilderCallback<CachedForecastState> builder;
 
-  CachedWeatherForecastBuilder({
+  CachedForecastBuilder({
     Key key,
     @required this.weatherForecastKey,
     @required this.builder,
@@ -21,21 +21,19 @@ class CachedWeatherForecastBuilder extends StatefulWidget {
         super(key: key);
 
   @override
-  State<CachedWeatherForecastBuilder> createState() =>
-      _CachedWeatherForecastBuilderState();
+  State<CachedForecastBuilder> createState() => _CachedForecastBuilderState();
 }
 
-class CachedWeatherForecastState {
+class CachedForecastState {
   final WeatherForecast cachedWeatherForecast;
   final bool cachedWeatherForecastLoaded;
 
-  const CachedWeatherForecastState(
+  const CachedForecastState(
       {@required this.cachedWeatherForecast,
       @required this.cachedWeatherForecastLoaded});
 }
 
-class _CachedWeatherForecastBuilderState
-    extends State<CachedWeatherForecastBuilder> {
+class _CachedForecastBuilderState extends State<CachedForecastBuilder> {
   WeatherForecast _cachedWeatherForecast;
   bool _cachedWeatherForecastLoaded = false;
 
@@ -89,7 +87,7 @@ class _CachedWeatherForecastBuilderState
       },
       child: widget.builder(
           context,
-          CachedWeatherForecastState(
+          CachedForecastState(
             cachedWeatherForecast: _cachedWeatherForecast,
             cachedWeatherForecastLoaded: _cachedWeatherForecastLoaded,
           )),
