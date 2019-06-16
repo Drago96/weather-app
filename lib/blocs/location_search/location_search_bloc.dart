@@ -9,7 +9,7 @@ class LocationSearchBloc
     extends Bloc<LocationSearchEvent, LocationSearchState> {
   static const LOCATION_SEARCH_DEBOUNCE_TIME = 500;
 
-  final WeatherApi weatherApi = WeatherApi();
+  final WeatherApi _weatherApi = WeatherApi();
 
   @override
   LocationSearchState get initialState => LocationsEmpty();
@@ -48,7 +48,7 @@ class LocationSearchBloc
       try {
         yield LocationsLoading(locations: currentState.locations);
 
-        final locations = await weatherApi.getLocationsBySearchTerm(
+        final locations = await _weatherApi.getLocationsBySearchTerm(
           event.searchTerm,
         );
 

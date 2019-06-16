@@ -49,13 +49,25 @@ class WeatherApi {
     return locations;
   }
 
+  Future<Location> getLocationByCoordinates(
+      double latitude, double longitude) async {
+    final searchUrl =
+        '$baseUrl/api/location/search/?lattlong=$latitude,$longitude';
+    final locationsResponse = await this.httpClient.get(searchUrl);
+
+    if (locationsResponse.statusCode != 200) {
+      throw Exception('Error finding location');
+    }
+
+    final locationsJson = jsonDecode(locationsResponse.body) as List;
+    final location = Location.fromJson(locationsJson.first);
+
+    return location;
+  }
+
   Future<int> _getLocationIdByCoordinates(
       double latitude, double longitude) async {
     return _getLocationIdByQuery("lattlong=$latitude,$longitude");
-  }
-
-  Future<int> _getLocationIdByName(String name) async {
-    return _getLocationIdByQuery("query=$name");
   }
 
   Future<int> _getLocationIdByQuery(String query) async {

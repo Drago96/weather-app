@@ -7,7 +7,7 @@ import 'package:weather_app/blocs/weather_forecast/weather_forecast_state.dart';
 
 class WeatherForecastBloc
     extends Bloc<WeatherForecastEvent, WeatherForecastState> {
-  final WeatherApi weatherApi = WeatherApi();
+  final WeatherApi _weatherApi = WeatherApi();
 
   @override
   WeatherForecastState get initialState => WeatherForecastEmpty();
@@ -37,7 +37,7 @@ class WeatherForecastBloc
 
       if (event is FetchWeatherForecastByLocationCoordiantes) {
         weatherForecast =
-            await weatherApi.getWeatherForecastByLocationCoordinates(
+            await _weatherApi.getWeatherForecastByLocationCoordinates(
           event.latitude,
           event.longitude,
         );
@@ -45,7 +45,7 @@ class WeatherForecastBloc
 
       if (event is FetchWeatherForecastByLocationId) {
         weatherForecast =
-            await weatherApi.getWeatherForecastByLocationId(event.locationId);
+            await _weatherApi.getWeatherForecastByLocationId(event.locationId);
       }
 
       yield WeatherForecastLoaded(weatherForecast: weatherForecast);

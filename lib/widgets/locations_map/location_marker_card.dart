@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:weather_app/models/location.dart';
 
 class LocationMarkerCard extends StatelessWidget {
-  final LatLng location;
+  final Location location;
   final VoidCallback onGoToMarkerClicked;
-  final void Function(BuildContext context) onViewForecastClicked;
+  final void Function(
+    BuildContext context,
+    Location location,
+  ) onViewForecastClicked;
   final VoidCallback onClearMarkerClicked;
 
   LocationMarkerCard({
@@ -31,10 +34,10 @@ class LocationMarkerCard extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.location_on),
                 subtitle: Text(
-                  'Marker',
+                  'Marked Location',
                 ),
                 title: Text(
-                  "Lat: ${location.latitude.toStringAsFixed(2)}, Long: ${location.longitude.toStringAsFixed(2)}",
+                  location.name,
                 ),
               ),
               ButtonTheme.bar(
@@ -47,7 +50,7 @@ class LocationMarkerCard extends StatelessWidget {
                     ),
                     FlatButton(
                       child: Text('VIEW FORECAST'),
-                      onPressed: () => onViewForecastClicked(context),
+                      onPressed: () => onViewForecastClicked(context, location),
                     ),
                     FlatButton(
                       child: Text('CLEAR MARKER'),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/screens/location_forecast_screen.dart';
 import 'package:weather_app/screens/current_location_forecast_screen.dart';
 import 'package:weather_app/screens/locations_map_screen.dart';
-import 'package:weather_app/screens/geographic_forecast_screen.dart';
 
 void main() => runApp(App());
 
@@ -30,8 +29,6 @@ class App extends StatelessWidget {
             CurrentLocationForecastScreen(),
         LocationForecastScreen.routeName: (context) => LocationForecastScreen(),
         LocationsMapScreen.routeName: (context) => LocationsMapScreen(),
-        GeographicForecastScreen.routeName: (context) =>
-            GeographicForecastScreen(),
       },
     );
   }

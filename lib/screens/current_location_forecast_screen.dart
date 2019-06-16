@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:weather_app/models/location.dart';
-import 'package:weather_app/screens/geographic_forecast_screen.dart';
 import 'package:weather_app/screens/location_forecast_screen.dart';
 import 'package:weather_app/screens/locations_map_screen.dart';
 import 'package:weather_app/widgets/location_search/location_search_delegate.dart';
@@ -18,19 +16,13 @@ class CurrentLocationForecastScreen extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.map),
           onPressed: () async {
-            final coordinates = await Navigator.pushNamed(
+            final location = await Navigator.pushNamed(
               context,
               LocationsMapScreen.routeName,
-            ) as LatLng;
+            ) as Location;
 
-            if (coordinates != null) {
-              Navigator.pushNamed(
-                context,
-                GeographicForecastScreen.routeName,
-                arguments: GeographicForecastArguments(
-                  coordinates: coordinates,
-                ),
-              );
+            if (location != null) {
+              _navigateToLocationForecast(context, location);
             }
           },
         ),
@@ -43,17 +35,21 @@ class CurrentLocationForecastScreen extends StatelessWidget {
             );
 
             if (location != null) {
-              Navigator.pushNamed(
-                context,
-                LocationForecastScreen.routeName,
-                arguments: LocationForecastArguments(
-                  location: location,
-                ),
-              );
+              _navigateToLocationForecast(context, location);
             }
           },
         )
       ],
+    );
+  }
+
+  void _navigateToLocationForecast(BuildContext context, Location location) {
+    Navigator.pushNamed(
+      context,
+      LocationForecastScreen.routeName,
+      arguments: LocationForecastArguments(
+        location: location,
+      ),
     );
   }
 
