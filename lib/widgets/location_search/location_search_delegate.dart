@@ -40,6 +40,7 @@ class LocationSearchDelegate extends SearchDelegate<Location> {
     return Center(
       child: Text(
         message,
+        textAlign: TextAlign.center,
         style: TextStyle(
           color: Colors.black,
           fontSize: 20,
