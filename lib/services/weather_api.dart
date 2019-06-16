@@ -26,7 +26,7 @@ class WeatherApi {
       throw Exception('Error getting weather for location');
     }
 
-    final weatherForecastJson = jsonDecode(weatherForecastResponse.body);
+    final weatherForecastJson = _decodeResponseBody(weatherForecastResponse);
 
     return WeatherForecast.fromJson(weatherForecastJson);
   }
@@ -39,7 +39,7 @@ class WeatherApi {
       throw Exception('Error searching for locations');
     }
 
-    final locationsJson = jsonDecode(locationsResponse.body) as List;
+    final locationsJson = _decodeResponseBody(locationsResponse) as List;
     final locations = locationsJson
         .map(
           (dynamic locationJson) => Location.fromJson(locationJson),
@@ -59,7 +59,7 @@ class WeatherApi {
       throw Exception('Error finding location');
     }
 
-    final locationsJson = jsonDecode(locationsResponse.body) as List;
+    final locationsJson = _decodeResponseBody(locationsResponse) as List;
     final location = Location.fromJson(locationsJson.first);
 
     return location;
@@ -78,8 +78,12 @@ class WeatherApi {
       throw Exception('Error getting locationId for location');
     }
 
-    final locationJson = jsonDecode(locationResponse.body) as List;
+    final locationJson = _decodeResponseBody(locationResponse) as List;
 
     return (locationJson.first)['woeid'];
+  }
+
+  dynamic _decodeResponseBody(http.Response response) {
+    return jsonDecode(utf8.decode(response.bodyBytes));
   }
 }
