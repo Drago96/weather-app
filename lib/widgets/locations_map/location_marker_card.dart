@@ -34,7 +34,7 @@ class LocationMarkerCard extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.location_on),
                 subtitle: Text(
-                  'Marked Location',
+                  'Location Marker',
                 ),
                 title: Text(
                   location.name,
@@ -45,15 +45,15 @@ class LocationMarkerCard extends StatelessWidget {
                   alignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     FlatButton(
-                      child: Text("GO TO MARKER"),
+                      child: Text('NAVIGATE'),
                       onPressed: onGoToMarkerClicked,
                     ),
                     FlatButton(
-                      child: Text('VIEW FORECAST'),
+                      child: Text('FORECAST'),
                       onPressed: () => onViewForecastClicked(context, location),
                     ),
                     FlatButton(
-                      child: Text('CLEAR MARKER'),
+                      child: Text('REMOVE'),
                       onPressed: onClearMarkerClicked,
                     ),
                   ],
