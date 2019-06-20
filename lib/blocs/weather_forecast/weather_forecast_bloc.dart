@@ -33,6 +33,10 @@ class WeatherForecastBloc
     WeatherForecastEvent event,
   ) async* {
     try {
+      yield WeatherForecastLoading(
+        weatherForecast: currentState.weatherForecast,
+      );
+
       WeatherForecast weatherForecast;
 
       if (event is FetchWeatherForecastByLocationCoordiantes) {

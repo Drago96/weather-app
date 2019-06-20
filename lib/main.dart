@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:weather_app/screens/location_forecast_screen.dart';
 import 'package:weather_app/screens/current_location_forecast_screen.dart';
 import 'package:weather_app/screens/locations_map_screen.dart';
 
-void main() => runApp(App());
+void main() async {
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   @override

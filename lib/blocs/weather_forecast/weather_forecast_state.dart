@@ -15,6 +15,11 @@ class WeatherForecastEmpty extends WeatherForecastState {
   WeatherForecastEmpty() : super(null);
 }
 
+class WeatherForecastLoading extends WeatherForecastState {
+  WeatherForecastLoading({WeatherForecast weatherForecast})
+      : super(weatherForecast);
+}
+
 class WeatherForecastLoaded extends WeatherForecastState {
   WeatherForecastLoaded({@required WeatherForecast weatherForecast})
       : assert(weatherForecast != null),
