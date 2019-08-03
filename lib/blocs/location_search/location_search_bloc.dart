@@ -7,7 +7,7 @@ import 'package:weather_app/services/weather_api.dart';
 
 class LocationSearchBloc
     extends Bloc<LocationSearchEvent, LocationSearchState> {
-  static const LOCATION_SEARCH_DEBOUNCE_TIME = 500;
+  static const LOCATION_SEARCH_DEBOUNCE_TIME = 0.5 * 1000;
 
   final WeatherApi _weatherApi = WeatherApi();
 
